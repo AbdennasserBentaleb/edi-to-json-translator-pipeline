@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: edi-translator-pipeline
+
+# Apache Camel Configuration
+camel:
+  springboot:
+    name: ${spring.application.name}
+    # Allow routes to be reloaded if needed
+    routes-reload-enabled: true
+    # Main enable flag config
+    main:
+      # Use MDC logging for correlation IDs
+      use-mdc-logging: true
+
+# Spring Boot Actuator endpoints for K8s probes
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+# EDI Application specific properties
+edi:
+  # The raw file path where files should be uploaded
+  upload-dir: ${EDI_UPLOAD_DIR:inbox}
+  # Base directory for the file polling
+  input-uri: file:${EDI_INPUT_DIR:inbox}?noop=true&idempotent=true
+  # Dead Letter Channel Directory
+  error-uri: file:${EDI_ERROR_DIR:error}
+  # REST Endpoint Egress (using environment variable overlay)
+  rest-endpoint: ${EDI_REST_ENDPOINT:http://localhost:8080/api/v1/canonical}
