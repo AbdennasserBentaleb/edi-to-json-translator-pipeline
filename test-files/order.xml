@@ -1,0 +1,9 @@
+<CanonicalPayload>
+  <transactionId>TXN-1002</transactionId>
+  <senderId>SND-002</senderId>
+  <senderName>Global Imports LLC</senderName>
+  <receiverId>RCV-888</receiverId>
+  <documentType>PURCHASE_ORDER</documentType>
+  <totalAmount>1450.75</totalAmount>
+  <currency>EUR</currency>
+</CanonicalPayload>
