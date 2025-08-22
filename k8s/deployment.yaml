@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edi-translator-pipeline
+  labels:
+    app: edi-translator-pipeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edi-translator-pipeline
+  template:
+    metadata:
+      labels:
+        app: edi-translator-pipeline
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        fsGroup: 65532
+      containers:
+        - name: edi-translator-pipeline
+          image: edi-translator-pipeline:1.0.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: EDI_INPUT_DIR
+              value: "/app/input"
+            - name: EDI_UPLOAD_DIR
+              value: "/app/input"
+            - name: EDI_ERROR_DIR
+              value: "/app/error"
+            - name: EDI_REST_ENDPOINT
+              value: "http://localhost:8080/api/v1/canonical"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: pipeline-storage
+              mountPath: /app/input
+              subPath: input
+            - name: pipeline-storage
+              mountPath: /app/error
+              subPath: error
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes:
+        - name: pipeline-storage
+          emptyDir: {}
+        - name: tmp-volume
+          emptyDir: {}
