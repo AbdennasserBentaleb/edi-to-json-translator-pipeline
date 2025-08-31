@@ -21,3 +21,10 @@ target/
 *.rar
 HELP.md
 .DS_Store
+
+# Enterprise / OS overrides
+.DS_Store
+.idea/
+.vscode/
+*.iml
+*.log
