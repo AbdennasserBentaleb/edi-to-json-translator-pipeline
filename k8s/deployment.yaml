@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edi-translator-pipeline
+  labels:
+    app: edi-translator-pipeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edi-translator-pipeline
+  template:
+    metadata:
+      labels:
+        app: edi-translator-pipeline
+    spec:
+      containers:
+        - name: edi-translator-pipeline
+          image: edi-translator-pipeline:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: EDI_INPUT_DIR
+              value: "/app/input"
+            - name: EDI_ERROR_DIR
+              value: "/app/error"
+          volumeMounts:
+            - name: pipeline-storage
+              mountPath: /app
+      volumes:
+        - name: pipeline-storage
+          emptyDir: {}

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: edi-translator-pipeline
+
+# Apache Camel Configuration
+camel:
+  springboot:
+    name: ${spring.application.name}
+    # Allow routes to be reloaded if needed
+    routes-reload-enabled: true
+    # Main enable flag config
+    main:
+      # Use MDC logging for correlation IDs
+      use-mdc-logging: true
+
+# EDI Application specific properties
+edi:
+  # Base directory for the file polling
+  input-dir: file:inbox?noop=true&idempotent=true
+  # Dead Letter Channel Directory
+  error-dir: file:error
+  # REST Endpoint Mock Egress
+  rest-endpoint: http://localhost:8080/api/v1/canonical
