@@ -15,8 +15,10 @@ camel:
 
 # EDI Application specific properties
 edi:
+  # The raw file path where files should be uploaded
+  upload-dir: inbox
   # Base directory for the file polling
-  input-dir: file:inbox?noop=true&idempotent=true
+  input-dir: file:${edi.upload-dir}?noop=true&idempotent=true
   # Dead Letter Channel Directory
   error-dir: file:error
   # REST Endpoint Mock Egress

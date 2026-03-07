@@ -20,8 +20,8 @@ public class FileUploadController {
 
     private static final Logger log = LoggerFactory.getLogger(FileUploadController.class);
 
-    @Value("${edi.input-dir}")
-    private String inputDir;
+    @Value("${edi.upload-dir}")
+    private String uploadDir;
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
@@ -30,8 +30,8 @@ public class FileUploadController {
         }
 
         try {
-            // Ensure the directory exists
-            Path directoryPath = Paths.get(inputDir);
+            // Ensure the directory exists as an absolute path
+            Path directoryPath = Paths.get(uploadDir).toAbsolutePath().normalize();
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
             }
