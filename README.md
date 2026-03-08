@@ -62,3 +62,8 @@ Run the full suite of unit and integration tests covering route logic, Camel con
 - `src/main/java`: Core domain models, processors, Camel routes, and REST controllers.
 - `src/main/resources/static`: Vanilla JS frontend dashboard for real-time monitoring.
 - `k8s/`: Kubernetes deployment manifests.
+
+## Author
+
+**Abdennasser Bentaleb**
+[abdennasserbentaleb@gmail.com](mailto:abdennasserbentaleb@gmail.com)

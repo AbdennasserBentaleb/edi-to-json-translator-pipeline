@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedContainer = document.getElementById('feedContainer');
     const emptyState = document.getElementById('emptyState');
     const clearBtn = document.getElementById('clearBtn');
-    
+
     let previousPayloads = [];
 
     // --- Drag and Drop Logic ---
@@ -40,15 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.click();
     });
 
-    fileInput.addEventListener('change', function() {
+    fileInput.addEventListener('change', function () {
         handleFiles(this.files);
     });
 
     function handleFiles(files) {
         if (files.length === 0) return;
-        
+
         const file = files[0];
-        
+
         // Basic validation
         if (!file.name.endsWith('.csv') && !file.name.endsWith('.xml')) {
             showStatus('Only CSV or XML files are supported.', 'error');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function uploadFile(file) {
         showStatus('Uploading...', 'success');
-        
+
         const formData = new FormData();
         formData.append('file', file);
 
@@ -68,20 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.text();
-        })
-        .then(data => {
-            showStatus('File accepted! Polling for canonical JSON...', 'success');
-            // Reset status after a few seconds
-            setTimeout(() => {
-                uploadStatus.classList.add('hidden');
-            }, 3000);
-        })
-        .catch(error => {
-            showStatus('Upload failed: ' + error.message, 'error');
-        });
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(data => {
+                showStatus('File accepted! Polling for canonical JSON...', 'success');
+                // Reset status after a few seconds
+                setTimeout(() => {
+                    uploadStatus.classList.add('hidden');
+                }, 3000);
+            })
+            .catch(error => {
+                showStatus('Upload failed: ' + error.message, 'error');
+            });
     }
 
     function showStatus(message, type) {
@@ -93,19 +93,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Live Feed Logic ---
 
     function formatTime(date) {
-        return new Date(date).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit', fractionalSecondDigits: 3 });
+        return new Date(date).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
     }
 
     function createPayloadCard(jsonString, timestamp) {
         const card = document.createElement('div');
         card.className = 'payload-card';
-        
+
         // Format the JSON nicely
         let formattedJson = jsonString;
         try {
             const parsed = JSON.parse(jsonString);
             formattedJson = JSON.stringify(parsed, null, 2);
-        } catch(e) { /* keep as is if not valid json for some reason */ }
+        } catch (e) { /* keep as is if not valid json for some reason */ }
 
         card.innerHTML = `
             <div class="payload-header">
@@ -124,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 // If the backend list changed, rebuild the UI
-                // Compare by length for simplicity in this demo demo
+                // Compare by length for simplicity in this demo
                 if (data.length !== previousPayloads.length) {
-                    
+
                     if (data.length > 0) {
                         emptyState.style.display = 'none';
                     } else {

@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 
 ## Project Overview
-The EDI to JSON Translator Pipeline is a microservice designed to modernize legacy B2B integration patterns. It ingestion legacy Electronic Data Interchange (EDI) file formats, specifically CSV and XML, validates the content, translates it into a canonical JSON representation, and forwards the payload to an egress REST API.
+The EDI to JSON Translator Pipeline is a microservice designed to modernize legacy B2B integration patterns. It ingests legacy Electronic Data Interchange (EDI) file formats, specifically CSV and XML, validates the content, translates it into a canonical JSON representation, and forwards the payload to an egress REST API.
 
 ## Problem Statement
 Many enterprise systems still rely on dropping legacy file formats onto FTP servers or shared network drives. Modern downstream systems require structured JSON data via HTTP. There is a need for a reliable, idempotent, and error-tolerant pipeline to bridge this gap without requiring changes to the legacy producer systems.
